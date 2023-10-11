@@ -23,10 +23,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
             for schedule in schedules: 
                 processed_schedules.append({
-               "therapistname": user[0],
-                "clientname": user[1],
-                "appointmentst": user[2],
-                "appointmentet": user[3]
+               "therapistname": schedule[0],
+                "clientname": schedule[1],
+                "appointmentst": schedule[2],
+                "appointmentet": schedule[3]
                 })
         elif usertype == 'Therapist': 
             curr = curr.execute(f"T.TherapistName,T.TherapistUsername,SELECT T.TherapistID,,C.Name AS ClientName FROM(SELECT Therapist.ID AS TherapistID,Therapist.Name AS TherapistName,LoginCredentials.Username AS TherapistUsername FROM Therapist INNER JOIN LoginCredentials ON Therapist.UserID = LoginCredentials.UserID WHERE LoginCredentials.UserID = '{userid}') AS T INNER JOIN Booking ON T.TherapistID = Booking.TherapistID INNER JOIN Client AS C ON Booking.ClientID = C.ID;")
@@ -35,9 +35,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
             for schedule in schedules: 
                 processed_schedules.append({
-               "therapistname": user[0],
-                "therapistid": user[1],
-                "clientname": user[2]})
+               "therapistname": schedule[0],
+                "therapistid": schedule[1],
+                "clientname": schedule[2]})
         else:  
            
             curr = curr.execute(f"SELECT T.Name AS TherapistName,T.PhoneNumber AS TherapistPhoneNumber,B.AppointmentStartTime,B.AppointmentEndTime FROM LoginCredentials AS LC INNER JOIN Client AS C ON LC.UserID = C.ID INNER JOIN Booking AS B ON C.ID = B.ClientID INNER JOIN Therapist AS T ON B.TherapistID = T.ID WHERE LC.UserID ='{userid}';")
@@ -46,10 +46,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
             for schedule in schedules: 
                 processed_schedules.append({
-               "therapistname": user[0],
-                "therapistph": user[1],
-                "appointmentst": user[2],
-                "appointmentet": user[3]})
+               "therapistname": schedule[0],
+                "therapistph": schedule[1],
+                "appointmentst": schedule[2],
+                "appointmentet": schedule[3]})
         
 
         return func.HttpResponse(
