@@ -15,6 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
         userid = body['userid']
         usertype= body['usertype']
+
         if usertype== 'Admin': 
             curr = curr.execute(f"SELECT Admin.ID AS AdminID,Admin.Name AS AdminName,Therapist.ID AS TherapistID,Therapist.Name AS TherapistName,Booking.ID AS BookingID,Booking.ClientID,Booking.AppointmentStartTime,Booking.AppointmentEndTime,LoginCredentials.Username AS AdminUsername,LoginCredentials.Password AS AdminPassword FROM Admin INNER JOIN LoginCredentials ON Admin.UserID = LoginCredentials.UserID INNER JOIN Therapist ON Admin.ID = Therapist.AdminID INNER JOIN Booking ON Therapist.ID = Booking.TherapistID Where LoginCredentials.UserID= '{userid}';")
          
@@ -24,20 +25,21 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
            
             curr = curr.execute(f"SELECT LoginCredentials.UserID, Client.Name AS ClientName,Booking.ID AS BookingID,Booking.AppointmentStartTime,Booking.AppointmentEndTime FROM LoginCredentials INNER JOIN Client ON LoginCredentials.UserID = Client.ID INNER JOIN Booking ON Client.ID = Booking.ClientID WHERE LoginCredentials.UserID = '{userid}';")
         
-        user = curr.fetchone()
+        schedules = curr.fetchall()
         
-        if user is not None:
-        
-            return func.HttpResponse(
-                json.dumps({
-                "user_id": user[0],
-                "client_type": user[1],
-                "hash": "verysecurehash"
-                }),
 
-            mimetype="application/json")
+        processed_schedules = []
+
+        for schedule in schedules: 
+            processed_schedules.append({
+                ""
+            })
+
+        return func.HttpResponse(
+            json.dumps({"schedule": processed_schedules}),
+            mimetype="application/json"
+        )
         
-        return func.HttpResponse("Not authorized", status_code=401)
     except Exception as e:
         return func.HttpResponse(str(e), status_code=500)
     
