@@ -2,18 +2,35 @@ import logging
 
 import azure.functions as func
 import pyodbc
-import os
+import json 
 
 connection_string = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:hackunamatata.database.windows.net,1433;Database=StaySafeDb;Uid=useradmin;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
-
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     curr = get_conn().cursor()
-    curr = curr.execute("SELECT * from LoginCredentials;")
+    body = req.get_json()
+
     try:
-        return func.HttpResponse(str(curr.fetchall()))
+        username = body['username']
+        pw = body['password']
+        curr = curr.execute(f"SELECT UserID, UserType from LoginCredentials where Username = '{username}' and Password='{pw}';")
+        
+        user = curr.fetchone()
+        
+        if user is not None:
+        
+            return func.HttpResponse(
+                json.dumps({
+                "user_id": user[0],
+                "client_type": user[1],
+                "hash": "verysecurehash"
+                }),
+
+            mimetype="application/json")
+        
+        return func.HttpResponse("Not authorized", status_code=401)
     except Exception as e:
         return func.HttpResponse(str(e), status_code=500)
     
