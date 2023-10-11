@@ -10,26 +10,13 @@ connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:hackunama
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
-
-    if name:
-        curr = get_conn().cursor()
-        curr = curr.execute("SELECT * from LoginCredentials;")
-        
+    curr = get_conn().cursor()
+    curr = curr.execute("SELECT * from LoginCredentials;")
+    try:
         return func.HttpResponse(str(curr.fetchall()))
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-    else:
-        return func.HttpResponse(
-             "{connection_string}",
-             status_code=200
-        )
+    except e:
+        return func.HttpResponse(str(e), status_code=500)
+    
     
 def get_conn():
     conn = pyodbc.connect(connection_string)
