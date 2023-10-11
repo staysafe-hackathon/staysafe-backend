@@ -53,7 +53,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         
 
         return func.HttpResponse(
-            json.dumps({"schedule": processed_schedules}),
+            json.dumps({"schedule": processed_schedules},default=str),
             mimetype="application/json"
         )
         
