@@ -14,7 +14,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     curr = curr.execute("SELECT * from LoginCredentials;")
     try:
         return func.HttpResponse(str(curr.fetchall()))
-    except e:
+    except Exception as e:
         return func.HttpResponse(str(e), status_code=500)
     
     
