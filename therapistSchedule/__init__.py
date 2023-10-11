@@ -4,7 +4,7 @@ import azure.functions as func
 import pyodbc
 import os
 
-connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:hackunamatata.database.windows.net,1433;Database=StaySafeDb;Uid=useradmin;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+connection_string = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:hackunamatata.database.windows.net,1433;Database=StaySafeDb;Uid=useradmin;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
