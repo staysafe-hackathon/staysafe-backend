@@ -11,7 +11,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     curr = get_conn().cursor()
-    curr = curr.execute("SELECT * from Booking;")
+    curr = curr.execute("SELECT * from Booking ;")
     try:
         return func.HttpResponse(str(curr.fetchall()))
     except Exception as e:
