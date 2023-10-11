@@ -4,7 +4,7 @@ import azure.functions as func
 import pyodbc
 import os
 
-connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:hackunamatata.database.windows.net,1433;Database=StaySafeDb;Uid=useradmin;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+connection_string = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:hackunamatata.database.windows.net,1433;Database=StaySafeDb;Uid=useradmin;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -14,7 +14,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     curr = curr.execute("SELECT * from LoginCredentials;")
     try:
         return func.HttpResponse(str(curr.fetchall()))
-    except e:
+    except Exception as e:
         return func.HttpResponse(str(e), status_code=500)
     
     
