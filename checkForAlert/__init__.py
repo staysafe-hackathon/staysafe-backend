@@ -1,11 +1,12 @@
 import datetime
 import logging
-
+import pyodbc
 import azure.functions as func
+import json
 
 connection_string = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:hackunamatata.database.windows.net,1433;Database=StaySafeDb;Uid=useradmin;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 
-def main(mytimer: func.TimerRequest) -> None:
+def main(mytimer: func.TimerRequest) -> str:
     utc_timestamp = datetime.datetime.utcnow().replace(
         tzinfo=datetime.timezone.utc).isoformat()
 
@@ -22,7 +23,7 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info('Python timer trigger function ran at %s', utc_timestamp)
 
     try:
-        return func.HttpResponse(str(curr.fetchall()))
+        return func.HttpResponse(json.dumps(curr.fetchall()))
     except Exception as e:
         return func.HttpResponse(str(e), status_code=500)
 
