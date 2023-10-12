@@ -12,7 +12,7 @@ def main(mytimer: func.TimerRequest) -> None:
     if mytimer.past_due:
         logging.info('The timer is past due!')
 
-    current_time = datetime.today.date()        
+    # current_time = datetime.tofday.date()        
 
     sql = "SELECT * FROM Booking WHERE CAST(AppointmentStartTime AS DATE) = CAST(GETDATE() AS DATE) AND AppointmentEndTime IS NULL AND DATEDIFF(MINUTE, AppointmentStartTime, GETDATE()) >= 5 AND (SELECT CheckIn FROM VisitSession WHERE BookingID = Booking.ID) IS NULL;"    
 
