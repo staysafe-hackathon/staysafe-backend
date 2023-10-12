@@ -19,7 +19,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
      
     print("booking id is: ", booking_id)
    
-    sql = "INSERT INTO Alert (ID, BookingID , Longitude, Latitude, Address, ReasonForAlert, AlertFlag,ReasonForFlag,IsAuto, IsResolved) VALUES (?,?, ?,?, ?, ?, ?, ?, ?,?,?)"
+    sql = "INSERT INTO Alert (ID, BookingID , Longitude, Latitude, Address, ReasonForAlert, AlertFlag,ReasonForFlag,IsAuto, IsResolved) VALUES (?,?, ?,?, ?, ?, ?, ?, ?,?)"
 
     curr = get_conn().cursor()
     curr = curr.execute(sql, (booking_id,booking_id, -4.263479940969531, 55.85485737526989, 'G5 8DP', 'Non cooperative', 'RED', 'Complaint',0,0))
