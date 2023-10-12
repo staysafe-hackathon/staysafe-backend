@@ -16,20 +16,22 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     body = req.get_json()
 
     booking_id = body["bookingId"]
-    
-    
-
+     
     print("booking id is: ", booking_id)
-    print("user id is: ", user_id)
-    print("date is: ", date)
-
-    sql = "INSERT INTO Alert (ID, BookingID , Longitude, Latitude, Address, ReasonForAlert, AlertFlag,ReasonForFlag,IsAuto, IsResolved) VALUES (?, 'YourGeoLocationValue', 'YourAddressValue', 'YourReasonForAlertValue', 1, 'YourReasonForFlagValue', 1, 0)"
+   
+    sql = "INSERT INTO Alert (ID, BookingID , Longitude, Latitude, Address, ReasonForAlert, AlertFlag,ReasonForFlag,IsAuto, IsResolved) VALUES (?,?, ?,?, ?, ?, ?, ?, ?,?,?)"
 
     curr = get_conn().cursor()
-    curr = curr.execute(sql, (booking_id, date, None, None, None, lat, long))
-
+    curr = curr.execute(sql, (booking_id,booking_id, -4.263479940969531, 55.85485737526989, 'G5 8DP', 1, 'Non cooperative', 'RED', 'Complaint',0,0))
+    
     curr.commit()
+    return func.HttpResponse(
+                json.dumps({
+                "bookingidalert":body["bookingId"],
+                "hash": "verysecurehash"
+                }),
 
+            mimetype="application/json")
     try:
         return func.HttpResponse(str(curr.fetchall()))
     except Exception as e:
