@@ -1,6 +1,6 @@
 import datetime
 import logging
-
+import pyodbc
 import azure.functions as func
 
 connection_string = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:hackunamatata.database.windows.net,1433;Database=StaySafeDb;Uid=useradmin;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
